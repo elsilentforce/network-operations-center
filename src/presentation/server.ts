@@ -1,6 +1,7 @@
 import { envs } from "../config/plugins/envs.plugins";
 import { FileSystemDataSource } from "../domain/datasources/file-system.datasource";
 import { CheckService } from "../domain/use-cases/checks/check-service";
+import SendEmailLogs from "../domain/use-cases/email/email-send-logs";
 import { LogRepositoryImplementation } from "../infrastructure/repository/log-repository.impl";
 import { CronService } from "./cron/cron-service";
 import { EmailService } from "./email/email.service";
@@ -12,7 +13,8 @@ const fileSystemLogRepository = new LogRepositoryImplementation(
 export class Server {
   static start(){
     console.log('Server started...');
-    this.sendLogFilesByEmail( envs.DEFAULT_RECEIVER_EMAIL );
+    // Uncomment this to send logs by email
+    // this.sendLogFilesByEmail( envs.DEFAULT_RECEIVER_EMAIL );
   }
 
   static checkLocalApi = () => {
@@ -30,7 +32,7 @@ export class Server {
   }
 
   static sendTestEmail = () => {
-    const emailService = new EmailService(fileSystemLogRepository);
+    const emailService = new EmailService();
     emailService.sendEmail({
       to: envs.DEFAULT_RECEIVER_EMAIL,
       subject: 'System Logs',
@@ -42,7 +44,15 @@ export class Server {
   }
 
   static sendLogFilesByEmail = (to: string) => {
-    const emailService = new EmailService(fileSystemLogRepository);
-    emailService.sendEmailWithSystemLogs(to);
+    const emailService = new EmailService();
+    const fileSystemLogRepository = new LogRepositoryImplementation(
+      new FileSystemDataSource()
+    );
+
+    const emailSender = new SendEmailLogs(
+      emailService,
+      fileSystemLogRepository
+    );
+    emailSender.execute(to);
   }
 }
