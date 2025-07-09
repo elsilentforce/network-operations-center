@@ -7,6 +7,5 @@ import { Server } from './presentation/server';
 })();
 
 function main(){
-  // Server.start();
-  console.log({port: envs.PORT});
+  Server.start();
 }
