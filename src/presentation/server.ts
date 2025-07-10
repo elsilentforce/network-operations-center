@@ -6,18 +6,21 @@ import { LogRepositoryImplementation } from "../infrastructure/repository/log-re
 import { CronService } from "./cron/cron-service";
 import { EmailService } from "./email/email.service";
 import { MongoLogDatasource } from "../infrastructure/datasources/mongo-log.datasource";
+import { LogSeverityLevel } from "../domain/entities/log.entity";
 
 const logRepository = new LogRepositoryImplementation(
-  // new FileSystemDataSource()
-  new MongoLogDatasource()
+  new FileSystemDataSource()
+  // new MongoLogDatasource()
 );
 
 export class Server {
-  static start(){
+  static async start(){
     console.log('Server started...');
     // Uncomment this to send logs by email
     // this.sendLogFilesByEmail( envs.DEFAULT_RECEIVER_EMAIL );
-    this.checkLocalApi();
+    // this.checkLocalApi();
+    const logs = await logRepository.getLogs(LogSeverityLevel.low);
+    console.log(logs);
   }
 
   static checkLocalApi = () => {
