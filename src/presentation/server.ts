@@ -1,13 +1,15 @@
 import { envs } from "../config/plugins/envs.plugins";
-import { FileSystemDataSource } from "../domain/datasources/file-system.datasource";
+import { FileSystemDataSource } from "../infrastructure/datasources/file-system.datasource";
 import { CheckService } from "../domain/use-cases/checks/check-service";
 import SendEmailLogs from "../domain/use-cases/email/email-send-logs";
 import { LogRepositoryImplementation } from "../infrastructure/repository/log-repository.impl";
 import { CronService } from "./cron/cron-service";
 import { EmailService } from "./email/email.service";
+import { MongoLogDatasource } from "../infrastructure/datasources/mongo-log.datasource";
 
-const fileSystemLogRepository = new LogRepositoryImplementation(
-  new FileSystemDataSource()
+const logRepository = new LogRepositoryImplementation(
+  // new FileSystemDataSource()
+  new MongoLogDatasource()
 );
 
 export class Server {
@@ -15,6 +17,7 @@ export class Server {
     console.log('Server started...');
     // Uncomment this to send logs by email
     // this.sendLogFilesByEmail( envs.DEFAULT_RECEIVER_EMAIL );
+    this.checkLocalApi();
   }
 
   static checkLocalApi = () => {
@@ -23,7 +26,7 @@ export class Server {
       () => {
         const url = 'http://localhost:3000/posts';
         new CheckService(
-          fileSystemLogRepository,
+          logRepository,
           () => console.log(`${ url } OK`),
           ( error ) => console.log( error )
         ).execute( url );

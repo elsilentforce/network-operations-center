@@ -18,13 +18,15 @@ async function main(){
   
   Server.start();
   
-  const newLog = await LogModel.create({
-    message: 'Test message from Mongo',
-    origin: 'app.ts',
-    level: 'low'
-  });
+  // const newLog = await LogModel.create({
+  //   message: 'Test message from Mongo',
+  //   origin: 'app.ts',
+  //   level: 'low'
+  // });
 
-  await newLog.save();
+  // await newLog.save();
+  // console.log(newLog);
 
-  console.log(newLog);
+  // const logs = await LogModel.find();
+  // console.log(logs);
 }
