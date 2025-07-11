@@ -8,7 +8,7 @@ You can save file into 1 to 3 of the following data sources:
 * PostgreSQL (prisma)
 
 ## Dev instructions
-1. Clone file env.template to .env and .env.test replacing with your test values into last file
+1. Clone file env.template to .env
 2. Configure environment variables listed at env.template
 3. Install dependencies by running ```npm install```
 4. Run the docker containers with ```docker compose up -d```
