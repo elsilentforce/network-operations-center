@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  mongo-db:
+  mongo-db-test:
     image: mongo:6.0.24
     restart: always
     environment:
@@ -11,7 +11,7 @@ services:
       - ./mongo-test:/data/db
     ports:
       - 27017:27017
-  postgres-db:
+  postgres-db-test:
     image: postgres:14.18
     restart: always
     environment:
