@@ -6,21 +6,39 @@ import { LogRepositoryImplementation } from "../infrastructure/repository/log-re
 import { CronService } from "./cron/cron-service";
 import { EmailService } from "./email/email.service";
 import { MongoLogDatasource } from "../infrastructure/datasources/mongo-log.datasource";
-import { LogSeverityLevel } from "../domain/entities/log.entity";
+import { LogEntity, LogSeverityLevel } from "../domain/entities/log.entity";
+import { PostgresLogDataSource } from "../infrastructure/datasources/postgres-log.datasource";
+import { CheckServiceMultiple } from "../domain/use-cases/checks/check-service-multiple";
+import { MongoDatabase } from "../data/mongo";
 
-const logRepository = new LogRepositoryImplementation(
+const fsLogRepository = new LogRepositoryImplementation(
   new FileSystemDataSource()
-  // new MongoLogDatasource()
+);
+
+const mongoLogRepository = new LogRepositoryImplementation(
+  new MongoLogDatasource()
+);
+
+const postgresLogRepository = new LogRepositoryImplementation(
+  new PostgresLogDataSource()
 );
 
 export class Server {
+
+
+
   static async start(){
     console.log('Server started...');
-    // Uncomment this to send logs by email
-    // this.sendLogFilesByEmail( envs.DEFAULT_RECEIVER_EMAIL );
-    // this.checkLocalApi();
-    const logs = await logRepository.getLogs(LogSeverityLevel.low);
-    console.log(logs);
+    
+    // Initialize MongoDB connection
+     await MongoDatabase.connect({
+      mongoHost: envs.MONGO_HOST,
+      mongoUser: envs.MONGO_USER,
+      mongoPassword: envs.MONGO_PASSWORD,
+      dbName: envs.MONGO_DB_NAME
+    });
+    
+    this.checkLocalApi();
   }
 
   static checkLocalApi = () => {
@@ -28,8 +46,8 @@ export class Server {
       '*/5 * * * * *',
       () => {
         const url = 'http://localhost:3000/posts';
-        new CheckService(
-          logRepository,
+        new CheckServiceMultiple(
+          [fsLogRepository, mongoLogRepository, postgresLogRepository],
           () => console.log(`${ url } OK`),
           ( error ) => console.log( error )
         ).execute( url );
