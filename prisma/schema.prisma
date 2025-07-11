@@ -17,7 +17,7 @@ datasource db {
 enum SeverityLevel {
   LOW
   MEDIUM
-  HIG
+  HIGH
 }
 
 model LogModel {
