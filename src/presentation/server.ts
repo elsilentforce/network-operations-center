@@ -55,6 +55,7 @@ export class Server {
     );
   }
 
+  // Sends simple email
   static sendTestEmail = () => {
     const emailService = new EmailService();
     emailService.sendEmail({
@@ -67,6 +68,7 @@ export class Server {
     });
   }
 
+  // Throws an Email with fs Logs attached to it
   static sendLogFilesByEmail = (to: string) => {
     const emailService = new EmailService();
     const fileSystemLogRepository = new LogRepositoryImplementation(
