@@ -5,7 +5,7 @@ This repository was built to monitor services health, it saves the log entries i
 You can save file into 1 to 3 of the following data sources:
 * File System (fs)
 * MongoDB (mongoose)
-* PostgreSQL
+* PostgreSQL (prisma)
 
 # Dev instructions
 1. Clone file env.template to .env
