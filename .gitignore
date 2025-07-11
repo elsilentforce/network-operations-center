@@ -2,7 +2,10 @@
 /dist
 /logs
 /mongo
+/mongo-test
 /postgres
+/postgres-test
 /src/generated/prisma
 
 .env
+.env.test
