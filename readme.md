@@ -7,7 +7,7 @@ You can save file into 1 to 3 of the following data sources:
 * MongoDB (mongoose)
 * PostgreSQL (prisma)
 
-# Dev instructions
+## Dev instructions
 1. Clone file env.template to .env
 2. Configure environment variables listed at env.template
 3. Install dependencies by running ```npm install```
