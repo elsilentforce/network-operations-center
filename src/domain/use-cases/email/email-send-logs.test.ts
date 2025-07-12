@@ -23,7 +23,7 @@ describe('SendEmailLogs', () => {
 
     describe('when email is sent', () => {
       it('saves a new successful log at LogRepository', async () => {
-        const result = await sendEmailLogs.execute('foo');
+        await sendEmailLogs.execute('foo');
         expect(mockLogRepository.saveLog).toHaveBeenCalledWith( expect.any(LogEntity) );
         expect(mockLogRepository.saveLog).toHaveBeenCalledWith({
           createdAt: expect.any(Date),
@@ -46,7 +46,7 @@ describe('SendEmailLogs', () => {
       });
 
       it('saves a new error log at LogRepository', async () => {
-        const result = await sendEmailLogs.execute('foo');
+        await sendEmailLogs.execute('foo');
         expect(mockLogRepository.saveLog).toHaveBeenCalledWith( expect.any(LogEntity) );
         expect(mockLogRepository.saveLog).toHaveBeenCalledWith({
           createdAt: expect.any(Date),
