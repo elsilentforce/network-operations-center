@@ -18,7 +18,6 @@ export class MongoDatabase {
       await mongoose.connect(conString);
       return true;
     }catch(error){
-      console.log('Mongo connection error');
       throw error;
      }
   }
