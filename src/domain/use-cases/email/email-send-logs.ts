@@ -19,13 +19,20 @@ export default class SendEmailLogs implements SendLogEmailUseCase {
       if(!sent){
         throw new Error('Email log was not sent');
       }
+      const log = new LogEntity({
+        message: `Log report sent to: ${to}`,
+        level: LogSeverityLevel.medium,
+        origin: 'email-send-logs.ts'
+      });
+      this.logRepository.saveLog(log);
       return true;
     } catch (error){
       const log = new LogEntity({
         message: `${error}`,
         level: LogSeverityLevel.high,
-        origin: 'send-email-log.ts'
+        origin: 'email-send-logs.ts'
       });
+      this.logRepository.saveLog(log);
       return false;
     }
   }
