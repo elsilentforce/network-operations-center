@@ -5,6 +5,16 @@ import { CheckService } from "./check-service";
 describe('CheckService', () =>{
   describe('when fetch returns true', () => {
     beforeEach(() => {
+      global.fetch = jest.fn(() =>
+        Promise.resolve({
+          json: () => Promise.resolve({ status: 'OK' }),
+          ok: true,
+          status: 200
+        }),
+      ) as jest.Mock;
+    });
+
+    afterEach(() => {
       jest.clearAllMocks();
     });
 
@@ -17,8 +27,7 @@ describe('CheckService', () =>{
     
     it('returns successCallback', async() => {
       const checkService = new CheckService(mockRepository, mockSuccessCallback, mockErrorCallback);
-      // const mockResponse =
-      const okCheck = await checkService.execute('http://www.google.com'); // TODO: Replace with a mock response
+      const okCheck = await checkService.execute('www.test-url.com'); // TODO: Replace with a mock response
       
       expect(okCheck).toBe(true);
       expect(mockSuccessCallback).toHaveBeenCalled();
