@@ -25,15 +25,16 @@ export class LogEntity {
     this.origin = origin;
   }
 
+  // ? {"message":"Service is ok","level":"low","createdAt":"2025-07-11T03:47:15.009Z","origin":"check-service.ts"}
   static fromJSON = (json: string): LogEntity => {
     json = (json === '') ? '{}' : json;
-    const { message, level, createdAt } = JSON.parse(json);
+    const { message, level, createdAt, origin } = JSON.parse(json);
     
     const log = new LogEntity({
       message: message,
       level: level,
-      createdAt: createdAt,
-      origin: 'log.entity.ts'
+      createdAt: new Date(createdAt),
+      origin: origin
     });
 
     log.createdAt = new Date(createdAt);
