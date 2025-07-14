@@ -9,12 +9,7 @@ describe('init mongoDB', () => {
 
   describe('with valid arguments', () => {
     it('connects to mongoDB', async() =>{
-      const connection = await MongoDatabase.connect({
-        mongoHost: envs.MONGO_HOST,
-        mongoUser: envs.MONGO_USER,
-        mongoPassword: envs.MONGO_PASSWORD,
-        dbName: envs.MONGO_DB_NAME,
-      });
+      const connection = await MongoDatabase.connect(envs.MONGO_URL);
       expect(connection).toBe(true);
     });
   });
@@ -22,12 +17,7 @@ describe('init mongoDB', () => {
   describe('with invalid values', () => {
     it('throws an error', async() => {
       try {
-        const connection = await MongoDatabase.connect({
-          mongoHost: envs.MONGO_HOST,
-          mongoUser: 'h4x',
-          mongoPassword: 'admin123',
-          dbName: envs.MONGO_DB_NAME,
-        });
+        const connection = await MongoDatabase.connect(envs.MONGO_URL);
       } catch(error){
         expect(error).not.toBeNull();
       }

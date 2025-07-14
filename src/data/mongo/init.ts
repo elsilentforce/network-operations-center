@@ -1,21 +1,9 @@
 import mongoose from "mongoose";
 
-interface ConnectionOptions {
-  mongoHost: string;
-  mongoUser: string;
-  mongoPassword: string;
-  dbName: string;
-}
-
 export class MongoDatabase {
-  static async connect(options: ConnectionOptions){
-    const { mongoHost, dbName, mongoUser, mongoPassword } = options;
-
-    const conString =
-      `mongodb://${ mongoUser }:${ mongoPassword }@${ mongoHost }/${ dbName }?authSource=admin`;
-
+  static async connect(mongoUrl: string){
     try{
-      await mongoose.connect(conString);
+      await mongoose.connect(mongoUrl);
       return true;
     }catch(error){
       throw error;
