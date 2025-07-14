@@ -19,6 +19,14 @@ describe('FileSystemDataSource', () => {
   });
 
   describe('when logs directory exists', () => {
+    beforeEach(() => {
+      new FileSystemDataSource();
+    });
+
+    afterEach(() => {
+      fs.rmSync(logPath, { recursive: true, force: true });
+    });
+
     const fsLogDataSource = new FileSystemDataSource();
     const lowSeverityTestLog = new LogEntity({
       message: 'test-message',
@@ -51,6 +59,18 @@ describe('FileSystemDataSource', () => {
     it('saves the low severity logs into logs-high.log file', () => {
       fsLogDataSource.saveLog(highSeverityTestLog);
       const generalLogs = fs.readFileSync(`${ logPath }/logs-high.log`, 'utf-8');
+      expect(generalLogs).toContain(JSON.stringify(highSeverityTestLog));
+    });
+
+    it('return general logs', () => {
+      fsLogDataSource.saveLog(lowSeverityTestLog);
+      fsLogDataSource.saveLog(mediumSeverityTestLog);
+      fsLogDataSource.saveLog(highSeverityTestLog);
+
+      fsLogDataSource.getLogs(LogSeverityLevel.low);
+      const generalLogs = fs.readFileSync(`${ logPath }/logs-general.log`, 'utf-8');
+      expect(generalLogs).toContain(JSON.stringify(lowSeverityTestLog));
+      expect(generalLogs).toContain(JSON.stringify(mediumSeverityTestLog));
       expect(generalLogs).toContain(JSON.stringify(highSeverityTestLog));
     });
   });
