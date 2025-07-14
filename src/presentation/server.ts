@@ -31,12 +31,7 @@ export class Server {
     console.log('Server started...');
     
     // Initialize MongoDB connection
-     await MongoDatabase.connect({
-      mongoHost: envs.MONGO_HOST,
-      mongoUser: envs.MONGO_USER,
-      mongoPassword: envs.MONGO_PASSWORD,
-      dbName: envs.MONGO_DB_NAME
-    });
+     await MongoDatabase.connect(envs.MONGO_URL);
     
     this.checkLocalApi();
   }
