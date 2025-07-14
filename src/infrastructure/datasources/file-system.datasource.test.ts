@@ -25,11 +25,33 @@ describe('FileSystemDataSource', () => {
       level: LogSeverityLevel.low,
       origin: 'file-system.datasource.test.ts'
     });
+    const mediumSeverityTestLog = new LogEntity({
+      message: 'test-message',
+      level: LogSeverityLevel.medium,
+      origin: 'file-system.datasource.test.ts'
+    });
+    const highSeverityTestLog = new LogEntity({
+      message: 'test-message',
+      level: LogSeverityLevel.high,
+      origin: 'file-system.datasource.test.ts'
+    });
 
     it('saves the low severity logs into logs-general.log file', () => {
       fsLogDataSource.saveLog(lowSeverityTestLog);
       const generalLogs = fs.readFileSync(`${ logPath }/logs-general.log`, 'utf-8');
       expect(generalLogs).toContain(JSON.stringify(lowSeverityTestLog));
+    });
+
+    it('saves the medium severity logs into logs-medium.log file', () => {
+      fsLogDataSource.saveLog(mediumSeverityTestLog);
+      const generalLogs = fs.readFileSync(`${ logPath }/logs-medium.log`, 'utf-8');
+      expect(generalLogs).toContain(JSON.stringify(mediumSeverityTestLog));
+    });
+
+    it('saves the low severity logs into logs-high.log file', () => {
+      fsLogDataSource.saveLog(highSeverityTestLog);
+      const generalLogs = fs.readFileSync(`${ logPath }/logs-high.log`, 'utf-8');
+      expect(generalLogs).toContain(JSON.stringify(highSeverityTestLog));
     });
   });
 });
