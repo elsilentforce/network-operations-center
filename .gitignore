@@ -6,5 +6,5 @@
 /postgres
 /postgres-test
 /src/generated/prisma
-
+/coverage
 .env
