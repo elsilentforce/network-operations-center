@@ -3,7 +3,7 @@ import { envs } from '../../config/plugins/envs.plugins';
 import { LogRepository } from '../../domain/repository/log.repository';
 import { LogEntity, LogSeverityLevel } from '../../domain/entities/log.entity';
 
-interface sendEmailOptions {
+export interface SendEmailOptions {
   to: string | string[];
   subject: string;
   htmlBody: string;
@@ -27,7 +27,7 @@ export class EmailService {
     }
   });
 
-  async sendEmail(options: sendEmailOptions):Promise<boolean>{
+  async sendEmail(options: SendEmailOptions):Promise<boolean>{
     const { to, subject, htmlBody, attachments = [] } = options;
 
     try{
